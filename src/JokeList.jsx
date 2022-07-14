@@ -1,18 +1,38 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
 import Joke from './Joke'
+
+const API_URL = 'https://icanhazdadjoke.com/'
 
 export default class JokeList extends Component {
   constructor(props) {
     super(props)
     this.state = {
       jokes: [
-        { jokeText: 'funny', jokeScore: 5 },
-        { jokeText: 'meh', jokeScore: 0 },
-        { jokeText: 'awful', jokeScore: -1 },
+        { id: 0, joke: 'funny', score: 5 },
+        { id: 1, joke: 'meh', score: 0 },
+        { id: 2, joke: 'awful', score: -1 },
       ],
     }
+    this.fetchJoke = this.fetchJoke.bind(this)
+    this.vote = this.vote.bind(this)
   }
+
+  async fetchJoke() {
+    const {
+      data: { id, joke, status },
+    } = await axios.get(API_URL, {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'https://github.com/neopythe/dad-jokes',
+      },
+    })
+    this.setState({ jokes: [...this.state.jokes, { id, joke, score: 0 }] })
+  }
+
+  vote() {}
+
   render() {
     return (
       <div className="flex justify-center items-center h-screen bg-slate-50">
@@ -23,14 +43,18 @@ export default class JokeList extends Component {
           <div className="flex justify-center items-center rounded-full shadow-2xl pb-6 pt-4 px-1 w-fit h-fit">
             <p className="text-8xl">😂</p>
           </div>
-          <button className="btn lowercase">new jokes</button>
+          <button onClick={this.fetchJoke} className="btn lowercase">
+            new jokes
+          </button>
         </header>
-        <ul className="flex flex-col justify-center items-center h-[550px] w-[700px] bg-slate-100 shadow-xl">
+        <ul className="flex flex-col justify-center items-center h-[550px] w-[700px] bg-slate-100 shadow-xl ">
           {this.state.jokes &&
             this.state.jokes.map((joke, index) => (
               <Joke
-                joke={this.state.jokes[index].jokeText}
-                score={this.state.jokes[index].jokeScore}
+                key={joke.id}
+                joke={joke.joke}
+                score={joke.score}
+                vote={this.vote}
               />
             ))}
         </ul>
