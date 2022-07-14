@@ -12,7 +12,7 @@ const Ul = styled.ul`
 
 export default class JokeList extends Component {
   static defaultProps = {
-    jokesPerGet: 10,
+    jokesPerGet: 5,
   }
 
   constructor(props) {
@@ -25,25 +25,31 @@ export default class JokeList extends Component {
   }
 
   async fetchJokes() {
-    const jokes = []
-    const promises = []
+    const newJokes = []
+    let promises = []
 
-    while (promises.length < this.props.jokesPerGet) {
-      promises.push(
-        axios.get(API_URL, {
-          headers: {
-            Accept: 'application/json',
-            'User-Agent': 'https://github.com/neopythe/dad-jokes',
-          },
-        })
-      )
+    while (newJokes.length < this.props.jokesPerGet) {
+      while (promises.length < this.props.jokesPerGet) {
+        promises.push(
+          axios.get(API_URL, {
+            headers: {
+              Accept: 'application/json',
+              'User-Agent': 'https://github.com/neopythe/dad-jokes',
+            },
+          })
+        )
+      }
+
+      const response = await Promise.all(promises)
+      response.forEach(({ data: { id, joke, success } }) => {
+        !newJokes.includes(joke) &&
+          !this.state.jokes.includes(joke) &&
+          newJokes.push(joke)
+      })
+      promises = []
     }
 
-    const response = await Promise.all(promises)
-    response.forEach(({ data: { id, joke, success } }) => {
-      jokes.push(joke)
-    })
-    this.setState({ jokes })
+    this.setState({ jokes: [...this.state.jokes, ...newJokes] })
   }
 
   vote() {}
@@ -69,7 +75,7 @@ export default class JokeList extends Component {
         <Ul className="flex flex-col justify-center items-center h-[90%] w-full min-w-[600px] bg-slate-100 shadow-xl overflow-y-auto">
           {this.state.jokes &&
             this.state.jokes.map((joke, index) => (
-              <Joke joke={joke} key={joke} />
+              <Joke joke={joke} key={joke} score={0} />
             ))}
         </Ul>
       </main>
