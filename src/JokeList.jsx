@@ -20,15 +20,15 @@ export default class JokeList extends Component {
     this.state = {
       jokes: [],
     }
-    this.fetchJoke = this.fetchJoke.bind(this)
+    this.fetchJokes = this.fetchJokes.bind(this)
     this.vote = this.vote.bind(this)
   }
 
-  async fetchJoke() {
+  async fetchJokes() {
     const jokes = []
     const promises = []
 
-    while (jokes.length < this.props.jokesPerGet) {
+    while (promises.length < this.props.jokesPerGet) {
       promises.push(
         axios.get(API_URL, {
           headers: {
@@ -37,12 +37,12 @@ export default class JokeList extends Component {
           },
         })
       )
-
-      const response = await Promise.all(promises)
-      response.forEach(({ data: { id, joke, success } }) => {
-        jokes.push(joke)
-      })
     }
+
+    const response = await Promise.all(promises)
+    response.forEach(({ data: { id, joke, success } }) => {
+      jokes.push(joke)
+    })
     this.setState({ jokes })
   }
 
@@ -60,7 +60,7 @@ export default class JokeList extends Component {
             className="w-3/5 rounded-full p-2 border-2 border-white shadow-2xl"
           />
           <button
-            onClick={this.fetchJoke}
+            onClick={this.fetchJokes}
             className="btn btn-info text-white rounded-full border-2 border-white lowercase shadow-xl text-sm font-normal px-12"
           >
             new&nbsp;<span className="font-semibold">jokes</span>
