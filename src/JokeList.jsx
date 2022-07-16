@@ -49,8 +49,8 @@ export default class JokeList extends Component {
 
       const response = await Promise.all(promises)
       response.forEach(({ data: { id, joke, success } }) => {
-        !newJokes.includes(joke) &&
-          !this.state.jokes.includes(joke) &&
+        !newJokes.find((joke) => joke.id === id) &&
+          !this.state.jokes.find((joke) => joke.id === id) &&
           newJokes.push({ id, joke, score: 0 })
       })
       promises = []
