@@ -22,7 +22,7 @@ export default class JokeList extends Component {
       jokes: [],
     }
     this.fetchJokes = this.fetchJokes.bind(this)
-    this.vote = this.vote.bind(this)
+    this.handleVote = this.handleVote.bind(this)
   }
 
   async fetchJokes() {
@@ -57,16 +57,14 @@ export default class JokeList extends Component {
     })
   }
 
-  vote(type, id) {
-    const joke = this.state.jokes.find((joke) => joke.id === id)
-    console.log(joke)
-    if (type === 'upvote') joke.score++
-    if (type === 'downvote') joke.score--
-    this.setState({
-      jokes: [...this.state.jokes.filter((joke) => joke.id !== id), joke].sort(
-        (a, b) => b.score - a.score
-      ),
-    })
+  handleVote(id, delta) {
+    this.setState((state) => ({
+      jokes: state.jokes
+        .map((joke) =>
+          joke.id === id ? { ...joke, score: joke.score + delta } : joke
+        )
+        .sort((a, b) => b.score - a.score),
+    }))
   }
 
   render() {
@@ -90,13 +88,14 @@ export default class JokeList extends Component {
         <Ul className="flex flex-col justify-center items-center h-[90%] w-full min-w-[600px] bg-slate-100 shadow-xl overflow-y-auto">
           <FlipMove className="w-full">
             {this.state.jokes &&
-              this.state.jokes.map((joke, index) => (
+              this.state.jokes.map((joke) => (
                 <Joke
                   key={joke.id}
-                  joke={joke.joke}
                   id={joke.id}
+                  joke={joke.joke}
                   score={joke.score}
-                  vote={this.vote}
+                  upvote={() => this.handleVote(joke.id, 1)}
+                  downvote={() => this.handleVote(joke.id, -1)}
                 />
               ))}
           </FlipMove>
