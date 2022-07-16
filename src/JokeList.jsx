@@ -50,7 +50,11 @@ export default class JokeList extends Component {
       promises = []
     }
 
-    this.setState({ jokes: [...this.state.jokes, ...newJokes] })
+    this.setState({
+      jokes: [...this.state.jokes, ...newJokes].sort(
+        (a, b) => b.score - a.score
+      ),
+    })
   }
 
   vote(type, id) {
