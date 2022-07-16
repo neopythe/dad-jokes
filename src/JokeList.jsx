@@ -69,7 +69,7 @@ export default class JokeList extends Component {
 
   render() {
     return (
-      <main className="flex items-center w-4/5 h-4/5">
+      <main className="flex items-center w-4/5 h-4/5 select-none">
         <header className="flex flex-col items-center justify-center gap-10 w-1/3 min-w-[300px] h-full bg-green-500 shadow-xl">
           <h1 className="text-5xl font-bold text-white">
             Dad <span className="font-thin">Jokes</span>

@@ -3,11 +3,31 @@ import React, { Component } from 'react'
 import { BsHandThumbsDownFill } from 'react-icons/bs'
 import { BsHandThumbsUpFill } from 'react-icons/bs'
 
-const emojis = ['😠', '😐', '🙂', '😀', '😆', '😂']
-
 export default class Joke extends Component {
   constructor(props) {
     super(props)
+  }
+
+  getColour() {
+    const { score } = this.props
+    if (score >= 15) return '#22C55E'
+    if (score >= 10) return '#6CCB60'
+    if (score >= 5) return '#B5D162'
+    if (score > -5) return '#ffd764'
+    if (score > -10) return '#FFAC43'
+    if (score > -15) return '#FF8021'
+    if (score <= -15) return '#FF5500'
+  }
+
+  getEmoji() {
+    const { score } = this.props
+    if (score >= 15) return 'rolling_on_the_floor_laughing'
+    if (score >= 10) return 'smiley'
+    if (score >= 5) return 'slightly_smiling_face'
+    if (score > -5) return 'no_mouth'
+    if (score > -10) return 'disappointed_relieved'
+    if (score > -15) return 'angry'
+    if (score <= -15) return 'face_with_symbols_on_mouth'
   }
 
   render() {
@@ -17,7 +37,10 @@ export default class Joke extends Component {
           <button onClick={this.props.upvote}>
             <BsHandThumbsUpFill className="text-[#ffd764] hover:text-[#e7bd3d]" />
           </button>
-          <div className="flex justify-center items-center rounded-full border-2 h-10 w-fit p-3 m-2 shadow-lg">
+          <div
+            style={{ borderColor: this.getColour() }}
+            className="flex justify-center items-center rounded-full border-2 h-10 w-10 p-3 m-2 shadow-lg"
+          >
             <span>{this.props.score}</span>
           </div>
           <button onClick={this.props.downvote}>
@@ -25,8 +48,8 @@ export default class Joke extends Component {
           </button>
         </div>
         <p className="mr-auto py-4">{this.props.joke}</p>
-        <div>
-          <i className="em em-rolling_on_the_floor_laughing text-3xl shadow-lg rounded-full" />
+        <div className="w-fit h-fit rounded-full shadow-lg">
+          <i className={`em em-${this.getEmoji()} text-3xl`} />
         </div>
       </div>
     )
