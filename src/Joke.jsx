@@ -14,7 +14,7 @@ export default class Joke extends Component {
 
   render() {
     return (
-      <div className="flex justify-between items-center pl-6 pr-2 py-1 w-full border-b last:border-none">
+      <div className="flex justify-between items-center pl-6 pr-2 py-1 min-w-full border-b last:border-none">
         <div className="flex flex-row items-center">
           <button onClick={this.handleClick} id="upvote">
             👍

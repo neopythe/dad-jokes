@@ -88,7 +88,7 @@ export default class JokeList extends Component {
           </button>
         </header>
         <Ul className="flex flex-col justify-center items-center h-[90%] w-full min-w-[600px] bg-slate-100 shadow-xl overflow-y-auto">
-          <FlipMove>
+          <FlipMove className="w-full">
             {this.state.jokes &&
               this.state.jokes.map((joke, index) => (
                 <Joke
