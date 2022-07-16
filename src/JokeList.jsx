@@ -64,13 +64,16 @@ export default class JokeList extends Component {
   }
 
   handleVote(id, delta) {
-    this.setState((state) => ({
-      jokes: state.jokes
-        .map((joke) =>
-          joke.id === id ? { ...joke, score: joke.score + delta } : joke
-        )
-        .sort((a, b) => b.score - a.score),
-    }))
+    this.setState(
+      (state) => ({
+        jokes: state.jokes
+          .map((joke) =>
+            joke.id === id ? { ...joke, score: joke.score + delta } : joke
+          )
+          .sort((a, b) => b.score - a.score),
+      }),
+      () => localStorage.setItem('jokes', JSON.stringify(this.state.jokes))
+    )
   }
 
   render() {
