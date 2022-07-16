@@ -19,10 +19,14 @@ export default class JokeList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      jokes: [],
+      jokes: JSON.parse(localStorage.getItem('jokes')) ?? [],
     }
     this.fetchJokes = this.fetchJokes.bind(this)
     this.handleVote = this.handleVote.bind(this)
+  }
+
+  componentDidMount() {
+    !this.state.jokes.length && this.fetchJokes()
   }
 
   async fetchJokes() {
@@ -35,7 +39,6 @@ export default class JokeList extends Component {
           axios.get(API_URL, {
             headers: {
               Accept: 'application/json',
-              'User-Agent': 'https://github.com/neopythe/dad-jokes',
             },
           })
         )
@@ -50,11 +53,14 @@ export default class JokeList extends Component {
       promises = []
     }
 
-    this.setState({
-      jokes: [...this.state.jokes, ...newJokes].sort(
-        (a, b) => b.score - a.score
-      ),
-    })
+    this.setState(
+      {
+        jokes: [...this.state.jokes, ...newJokes].sort(
+          (a, b) => b.score - a.score
+        ),
+      },
+      () => localStorage.setItem('jokes', JSON.stringify(this.state.jokes))
+    )
   }
 
   handleVote(id, delta) {
