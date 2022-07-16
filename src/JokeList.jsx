@@ -21,7 +21,7 @@ export default class JokeList extends Component {
       jokes: [],
     }
     this.fetchJokes = this.fetchJokes.bind(this)
-    // this.vote = this.vote.bind(this)
+    this.vote = this.vote.bind(this)
   }
 
   async fetchJokes() {
@@ -52,11 +52,17 @@ export default class JokeList extends Component {
     this.setState({ jokes: [...this.state.jokes, ...newJokes] })
   }
 
-  // vote(type, id) {
-  //   const joke = this.state.jokes.find((joke) => joke.id === id)
-
-  //   this.setState({ jokes: { ...jokes } })
-  // }
+  vote(type, id) {
+    const joke = this.state.jokes.find((joke) => joke.id === id)
+    console.log(joke)
+    if (type === 'upvote') joke.score++
+    if (type === 'downvote') joke.score--
+    this.setState({
+      jokes: [...this.state.jokes.filter((joke) => joke.id !== id), joke].sort(
+        (a, b) => b.score - a.score
+      ),
+    })
+  }
 
   render() {
     return (
