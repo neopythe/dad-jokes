@@ -20,13 +20,16 @@ export default class JokeList extends Component {
     super(props)
     this.state = {
       jokes: JSON.parse(localStorage.getItem('jokes')) ?? [],
+      loading: false,
     }
-    this.fetchJokes = this.fetchJokes.bind(this)
+    this.handleClick = this.handleClick.bind(this)
     this.handleVote = this.handleVote.bind(this)
   }
 
   componentDidMount() {
-    !this.state.jokes.length && this.fetchJokes()
+    if (!this.state.jokes.length) {
+      this.setState({ loading: true }, this.fetchJokes)
+    }
   }
 
   async fetchJokes() {
@@ -58,9 +61,14 @@ export default class JokeList extends Component {
         jokes: [...this.state.jokes, ...newJokes].sort(
           (a, b) => b.score - a.score
         ),
+        loading: false,
       },
       () => localStorage.setItem('jokes', JSON.stringify(this.state.jokes))
     )
+  }
+
+  handleClick() {
+    this.setState({ loading: true }, this.fetchJokes)
   }
 
   handleVote(id, delta) {
@@ -88,12 +96,13 @@ export default class JokeList extends Component {
             className="w-3/5 rounded-full p-2 border-2 border-white shadow-2xl"
           />
           <button
-            onClick={this.fetchJokes}
+            onClick={this.handleClick}
             className="btn btn-info hover:bg-[#00b4dc] hover:border-white text-white rounded-full border-2 border-white lowercase shadow-xl text-sm font-normal px-12"
           >
             new&nbsp;<span className="font-semibold">jokes</span>
           </button>
         </header>
+
         <Ul className="flex flex-col justify-center items-center h-[90%] w-full min-w-[600px] bg-slate-100 shadow-xl overflow-y-auto">
           <FlipMove className="w-full">
             {this.state.jokes &&

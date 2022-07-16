@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import { BsHandThumbsDownFill } from 'react-icons/bs'
 import { BsHandThumbsUpFill } from 'react-icons/bs'
 
