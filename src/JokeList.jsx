@@ -60,9 +60,7 @@ export default class JokeList extends Component {
 
       this.setState(
         {
-          jokes: [...this.state.jokes, ...newJokes].sort(
-            (a, b) => b.score - a.score
-          ),
+          jokes: [...this.state.jokes, ...newJokes],
           loading: false,
         },
         () => localStorage.setItem('jokes', JSON.stringify(this.state.jokes))
@@ -80,11 +78,9 @@ export default class JokeList extends Component {
   handleVote(id, delta) {
     this.setState(
       (state) => ({
-        jokes: state.jokes
-          .map((joke) =>
-            joke.id === id ? { ...joke, score: joke.score + delta } : joke
-          )
-          .sort((a, b) => b.score - a.score),
+        jokes: state.jokes.map((joke) =>
+          joke.id === id ? { ...joke, score: joke.score + delta } : joke
+        ),
       }),
       () => localStorage.setItem('jokes', JSON.stringify(this.state.jokes))
     )
@@ -112,16 +108,18 @@ export default class JokeList extends Component {
         <Ul className="flex flex-col justify-center items-center h-[90%] w-full min-w-[600px] bg-slate-100 shadow-xl overflow-y-auto">
           <FlipMove className="w-full">
             {this.state.jokes &&
-              this.state.jokes.map((joke) => (
-                <Joke
-                  key={joke.id}
-                  id={joke.id}
-                  joke={joke.joke}
-                  score={joke.score}
-                  upvote={() => this.handleVote(joke.id, 1)}
-                  downvote={() => this.handleVote(joke.id, -1)}
-                />
-              ))}
+              this.state.jokes
+                .sort((a, b) => b.score - a.score)
+                .map((joke) => (
+                  <Joke
+                    key={joke.id}
+                    id={joke.id}
+                    joke={joke.joke}
+                    score={joke.score}
+                    upvote={() => this.handleVote(joke.id, 1)}
+                    downvote={() => this.handleVote(joke.id, -1)}
+                  />
+                ))}
           </FlipMove>
         </Ul>
       </main>
