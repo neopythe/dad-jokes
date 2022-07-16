@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
+import FlipMove from 'react-flip-move'
 
 import Joke from './Joke'
 
@@ -83,16 +84,18 @@ export default class JokeList extends Component {
           </button>
         </header>
         <Ul className="flex flex-col justify-center items-center h-[90%] w-full min-w-[600px] bg-slate-100 shadow-xl overflow-y-auto">
-          {this.state.jokes &&
-            this.state.jokes.map((joke, index) => (
-              <Joke
-                key={joke.id}
-                joke={joke.joke}
-                id={joke.id}
-                score={joke.score}
-                vote={this.vote}
-              />
-            ))}
+          <FlipMove>
+            {this.state.jokes &&
+              this.state.jokes.map((joke, index) => (
+                <Joke
+                  key={joke.id}
+                  joke={joke.joke}
+                  id={joke.id}
+                  score={joke.score}
+                  vote={this.vote}
+                />
+              ))}
+          </FlipMove>
         </Ul>
       </main>
     )
