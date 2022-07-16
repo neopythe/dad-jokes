@@ -21,7 +21,7 @@ export default class JokeList extends Component {
       jokes: [],
     }
     this.fetchJokes = this.fetchJokes.bind(this)
-    this.vote = this.vote.bind(this)
+    // this.vote = this.vote.bind(this)
   }
 
   async fetchJokes() {
@@ -44,7 +44,7 @@ export default class JokeList extends Component {
       response.forEach(({ data: { id, joke, success } }) => {
         !newJokes.includes(joke) &&
           !this.state.jokes.includes(joke) &&
-          newJokes.push(joke)
+          newJokes.push({ id, joke, score: 0 })
       })
       promises = []
     }
@@ -52,7 +52,11 @@ export default class JokeList extends Component {
     this.setState({ jokes: [...this.state.jokes, ...newJokes] })
   }
 
-  vote() {}
+  // vote(type, id) {
+  //   const joke = this.state.jokes.find((joke) => joke.id === id)
+
+  //   this.setState({ jokes: { ...jokes } })
+  // }
 
   render() {
     return (
@@ -67,7 +71,7 @@ export default class JokeList extends Component {
           />
           <button
             onClick={this.fetchJokes}
-            className="btn btn-info text-white rounded-full border-2 border-white lowercase shadow-xl text-sm font-normal px-12"
+            className="btn btn-info hover:bg-[#00b4dc] hover:border-white text-white rounded-full border-2 border-white lowercase shadow-xl text-sm font-normal px-12"
           >
             new&nbsp;<span className="font-semibold">jokes</span>
           </button>
@@ -75,7 +79,13 @@ export default class JokeList extends Component {
         <Ul className="flex flex-col justify-center items-center h-[90%] w-full min-w-[600px] bg-slate-100 shadow-xl overflow-y-auto">
           {this.state.jokes &&
             this.state.jokes.map((joke, index) => (
-              <Joke joke={joke} key={joke} score={0} />
+              <Joke
+                key={joke.id}
+                joke={joke.joke}
+                id={joke.id}
+                score={joke.score}
+                vote={this.vote}
+              />
             ))}
         </Ul>
       </main>

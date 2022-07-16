@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-const emojis = ['😡', '😐', '😂']
+const emojis = ['😠', '😐', '🙂', '😀', '😆', '😂']
 
 export default class Joke extends Component {
   constructor(props) {
@@ -9,7 +9,7 @@ export default class Joke extends Component {
   }
 
   handleClick(event) {
-    this.props.vote(event.target.id, this.props.joke)
+    this.props.vote(event.target.id, this.props.id)
   }
 
   render() {
@@ -20,7 +20,7 @@ export default class Joke extends Component {
             👍
           </button>
           <div className="flex justify-center items-center rounded-full border-2 w-10 h-10 min-w-fit p-3 m-2 shadow-lg">
-            <p>{this.props.score}</p>
+            <span>{this.props.score}</span>
           </div>
           <button onClick={this.handleClick} id="downvote">
             👎
