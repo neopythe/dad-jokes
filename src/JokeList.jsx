@@ -22,49 +22,55 @@ export default class JokeList extends Component {
       jokes: JSON.parse(localStorage.getItem('jokes')) ?? [],
       loading: false,
     }
+    this.seenJokes = new Set(this.state.jokes.map((joke) => joke.id))
     this.handleClick = this.handleClick.bind(this)
     this.handleVote = this.handleVote.bind(this)
   }
 
   componentDidMount() {
-    if (!this.state.jokes.length) {
+    !this.state.jokes.length &&
       this.setState({ loading: true }, this.fetchJokes)
-    }
   }
 
   async fetchJokes() {
-    const newJokes = []
-    let promises = []
+    try {
+      const newJokes = []
+      let promises = []
 
-    while (newJokes.length < this.props.jokesPerGet) {
-      while (promises.length < this.props.jokesPerGet) {
-        promises.push(
-          axios.get(API_URL, {
-            headers: {
-              Accept: 'application/json',
-            },
-          })
-        )
+      while (newJokes.length < this.props.jokesPerGet) {
+        while (promises.length < this.props.jokesPerGet) {
+          promises.push(
+            axios.get(API_URL, {
+              headers: {
+                Accept: 'application/json',
+              },
+            })
+          )
+        }
+
+        const response = await Promise.all(promises)
+        response.forEach(({ data: { id, joke, success } }) => {
+          !newJokes.find((joke) => joke.id === id) &&
+            !this.seenJokes.has(id) &&
+            newJokes.push({ id, joke, score: 0 }) &&
+            this.seenJokes.add(id)
+        })
+        promises = []
       }
 
-      const response = await Promise.all(promises)
-      response.forEach(({ data: { id, joke, success } }) => {
-        !newJokes.find((joke) => joke.id === id) &&
-          !this.state.jokes.find((joke) => joke.id === id) &&
-          newJokes.push({ id, joke, score: 0 })
-      })
-      promises = []
+      this.setState(
+        {
+          jokes: [...this.state.jokes, ...newJokes].sort(
+            (a, b) => b.score - a.score
+          ),
+          loading: false,
+        },
+        () => localStorage.setItem('jokes', JSON.stringify(this.state.jokes))
+      )
+    } catch (err) {
+      this.setState({ loading: false })
+      alert(err)
     }
-
-    this.setState(
-      {
-        jokes: [...this.state.jokes, ...newJokes].sort(
-          (a, b) => b.score - a.score
-        ),
-        loading: false,
-      },
-      () => localStorage.setItem('jokes', JSON.stringify(this.state.jokes))
-    )
   }
 
   handleClick() {
