@@ -20,9 +20,11 @@ const Spinner = styled.div`
 export default class LoadingSpinner extends Component {
   render() {
     return (
-      <Spinner>
-        <CgSmileMouthOpen className="text-[#ffd764] h-32 w-32" />
-      </Spinner>
+      <div className="block my-auto">
+        <Spinner>
+          <CgSmileMouthOpen className="text-[#ffd764] h-32 w-32" />
+        </Spinner>
+      </div>
     )
   }
 }

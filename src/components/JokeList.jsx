@@ -264,7 +264,7 @@ export default class JokeList extends Component {
             new&nbsp;<span className="font-semibold">jokes</span>
           </button>
         </header>
-        <Ul className="flex flex-col justify-center items-center h-[90%] w-full min-w-[600px] bg-slate-100 shadow-xl overflow-y-auto">
+        <Ul className="flex flex-col items-center h-[90%] w-full min-w-[600px] bg-slate-100 shadow-xl overflow-y-auto">
           {this.state.loading && <LoadingSpinner />}
           {!this.state.loading && (
             <FlipMove className="w-full">
