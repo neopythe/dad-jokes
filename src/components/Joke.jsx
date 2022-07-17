@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BsHandThumbsDownFill } from 'react-icons/bs'
 import { BsHandThumbsUpFill } from 'react-icons/bs'
 
-import { UpvoteButton, DownvoteButton } from './styles/Joke.styled'
+import { UpvoteButton, DownvoteButton, JokeEmoji } from './styles/Joke.styled'
 
 export default class Joke extends Component {
   constructor(props) {
@@ -50,7 +50,7 @@ export default class Joke extends Component {
         </div>
         <p className="mr-auto py-4">{this.props.joke}</p>
         <div className="w-fit h-fit rounded-full shadow-lg">
-          <i className={`em em-${this.getEmoji()} text-3xl`} />
+          <JokeEmoji className={`em em-${this.getEmoji()} text-3xl`} />
         </div>
       </div>
     )

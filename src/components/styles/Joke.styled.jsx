@@ -36,4 +36,28 @@ const DownvoteButton = styled.button`
   }
 `
 
-export { UpvoteButton, DownvoteButton }
+const JokeEmoji = styled.i`
+  &:hover {
+    animation: 0.7s ease-in-out 0s spin;
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(20deg);
+      }
+      50% {
+        transform: rotate(0deg);
+      }
+      75% {
+        transform: rotate(10deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+  }
+`
+
+export { UpvoteButton, DownvoteButton, JokeEmoji }
