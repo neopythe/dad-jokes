@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import JokeList from './JokeList'
+import JokeList from './components/JokeList'
 
 export default class App extends Component {
   render() {

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { BsHandThumbsDownFill } from 'react-icons/bs'
 import { BsHandThumbsUpFill } from 'react-icons/bs'
 
+import { UpvoteButton, DownvoteButton } from './styles/Joke.styled'
+
 export default class Joke extends Component {
   constructor(props) {
     super(props)
@@ -33,18 +35,18 @@ export default class Joke extends Component {
     return (
       <div className="flex justify-between items-center pl-6 pr-4 py-2 min-w-full gap-6 border-b last:border-none">
         <div className="flex flex-row items-center">
-          <button onClick={this.props.upvote}>
-            <BsHandThumbsUpFill className="text-[#ffd764] hover:text-[#e7bd3d]" />
-          </button>
+          <UpvoteButton onClick={this.props.upvote}>
+            <BsHandThumbsUpFill className="text-[#ffd764] hover:text-[#e7bd3d] transition-colors ease-in-out hover:scale-125" />
+          </UpvoteButton>
           <div
             style={{ borderColor: this.getColour() }}
             className="flex justify-center items-center rounded-full border-2 h-10 w-10 p-3 m-2 shadow-lg"
           >
             <span>{this.props.score}</span>
           </div>
-          <button onClick={this.props.downvote}>
-            <BsHandThumbsDownFill className="text-[#ffd764] hover:text-[#e7bd3d]" />
-          </button>
+          <DownvoteButton onClick={this.props.downvote}>
+            <BsHandThumbsDownFill className="text-[#ffd764] hover:text-[#e7bd3d] transition-colors ease-in-out hover:scale-125" />
+          </DownvoteButton>
         </div>
         <p className="mr-auto py-4">{this.props.joke}</p>
         <div className="w-fit h-fit rounded-full shadow-lg">
